@@ -5,7 +5,7 @@ import Result from '../Result';
 const Room = () => {
 	return (
 		<div className="Room">
-			<Result />
+			{/* <Result /> */}
 			<Message isCurrentUser={false}/>
 			<Message isCurrentUser={true}/>
 			<Message isCurrentUser={false}/>

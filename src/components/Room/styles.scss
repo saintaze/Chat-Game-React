@@ -1,3 +1,5 @@
+@import '../../scss/colors';
+
 .Room {
 	padding: 3.8rem 3rem;
 	flex: 68%;
@@ -13,10 +15,10 @@
 .answer {
 	height: 5.6rem;
 	width: 5.6rem;
-	background-color: #fff;
-	border: 1px solid #d7d7d7;
+	background-color: $color-white;
+	border: 1px solid $color-grey-light-2;
 	border-radius: 5rem;
-	color: #1574F5;
+	color: $color-blue;
 	font-weight: 700;
 	font-size: 1.8rem;
 	display: grid;
@@ -25,8 +27,7 @@
 
 	&:hover {
 		cursor: pointer;
-		// background-color: #f7f7f7;
-		background-color: lighten($color: pink, $amount: 10);
+		background-color: $color-pink-light;
 		transition: all .2s;
 	}
 

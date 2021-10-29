@@ -1,12 +1,14 @@
+@import '../../scss/colors';
+
 .RoomsList {
 	flex: 32%;
-	background-color: #f8f5f3;
-	padding: 3rem 3rem;
+	background-color: $color-cream;
+	padding: 3rem;
 
 	.heading {
 		font-weight: 700;
 		font-size: 1.4rem;
-		color: #205A6D;
+		color: $color-green-dark-2;
 		letter-spacing: .2px;
 	}
 
@@ -16,7 +18,7 @@
 
 	.roomLink {
 		list-style-type: none;
-		background-color: #fff;
+		background-color: $color-white;
 		height: 6.4rem;
 		display: flex;
 		align-items: center;
@@ -24,20 +26,20 @@
 		padding: 3.4rem 2.8rem;
 		
 		&:not(:last-child){
-			border-bottom: 1px solid #eee;
+			border-bottom: 1px solid $color-grey-light-1;
 		}
 
 		&.active {
-			background-color: #1574F5;
+			background-color: $color-blue;
 		}
 
 		&:hover {
 			cursor: pointer;
-			background-color: lighten($color: #FF8000, $amount: 2);
+			background-color: lighten($color: $color-orange, $amount: 2);
 			transition: all .2s;
 
 			& .roomName, & .rightChevron {
-				color: white;
+				color: $color-white;
 			}
 		}
 	}
@@ -45,17 +47,17 @@
 	.roomName {
 		font-weight: 700;
 		font-size: 1.4rem;
-		color: #205A6D;
+		color: $color-green-dark-2;
 	}
 
 	.rightChevron {
-		color: #1574F5;
+		color: $color-blue;
 		font-size: 1.9rem;
 	}
 
 	.roomLink.active {
 		.roomName, .rightChevron  {
-			color: #fff;
+			color: $color-white;
 		}
 	}
 

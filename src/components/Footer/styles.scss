@@ -1,17 +1,19 @@
+@import '../../scss/colors';
+
 .Footer {
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
 	height: 7.2rem;
 	padding: 0 1.6rem;
-	background-color: #0A3847;
+	background-color: $color-green-dark-1;
 
 	.footerLogo {
 		height: 4rem;
 	}
 
 	.cookieStatement, .copyright {
-		color: #fff;
+		color: $color-white;
 		font-size: 1.2rem;
 		letter-spacing: .3px;
 	}

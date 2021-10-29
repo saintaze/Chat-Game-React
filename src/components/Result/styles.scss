@@ -1,3 +1,5 @@
+@import '../../scss/colors';
+
 .Result {
 	position: absolute;
 	z-index: 10;
@@ -23,25 +25,25 @@
 	.resultText {
 		font-weight: 700;
 		font-size: 4.1rem;
-		color: #fff;
+		color: $color-white;
 		margin: 2rem 0;
 	}
 
 	.playAgain {
-		background-color: #fff;
+		background-color: $color-white;
 		border-radius: 2.8rem;
 		width: 24.3rem;
 		height: 5.6rem;
 		font-weight: 700;
 		font-size: 1.6rem;
 		text-align: center;
-		color: #1574F5;
+		color: $color-blue;
 		border: none;
 		outline: none;
 		cursor: pointer;
 
 		&:hover {
-			background-color: #e7e7e7;
+		  background-color: $color-pink-light;
 			transition: all .2s;
 		}
 	}

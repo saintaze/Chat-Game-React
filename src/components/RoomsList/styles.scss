@@ -1,0 +1,62 @@
+.RoomsList {
+	flex: 32%;
+	background-color: #f8f5f3;
+	padding: 3rem 3rem;
+
+	.heading {
+		font-weight: 700;
+		font-size: 1.4rem;
+		color: #205A6D;
+		letter-spacing: .2px;
+	}
+
+	.roomsNav {
+		margin-top: 2rem;
+	}
+
+	.roomLink {
+		list-style-type: none;
+		background-color: #fff;
+		height: 6.4rem;
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		padding: 3.4rem 2.8rem;
+		
+		&:not(:last-child){
+			border-bottom: 1px solid #eee;
+		}
+
+		&.active {
+			background-color: #1574F5;
+		}
+
+		&:hover {
+			cursor: pointer;
+			background-color: lighten($color: #FF8000, $amount: 2);
+			transition: all .2s;
+
+			& .roomName, & .rightChevron {
+				color: white;
+			}
+		}
+	}
+
+	.roomName {
+		font-weight: 700;
+		font-size: 1.4rem;
+		color: #205A6D;
+	}
+
+	.rightChevron {
+		color: #1574F5;
+		font-size: 1.9rem;
+	}
+
+	.roomLink.active {
+		.roomName, .rightChevron  {
+			color: #fff;
+		}
+	}
+
+ }

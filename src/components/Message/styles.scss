@@ -1,0 +1,75 @@
+.Message {
+	display: flex;
+
+	&.right {
+		justify-content: flex-end;
+	}
+
+	&:not(:last-child) {
+		margin-bottom: 3rem;
+	}
+
+	.avatar {
+		align-self: flex-start;
+		border-radius: 10rem;
+		color: white;
+		height: 4rem;
+		width: 4rem;
+		display: grid;
+		place-items: center;
+		
+		&.left {
+			margin-right: 1.8rem;
+			background-color: #FF8000;
+		}
+
+		&.right {
+			margin-left: 1.8rem;
+				background-color: #205A6D;
+		}
+
+	}
+
+	.selectedNumber {
+		margin-bottom: 1.3rem;
+		height: 5.6rem;
+		width: 5.6rem;
+	
+		border-radius: 5rem;
+		color: #fff;
+		display: grid;
+		place-items: center;
+		font-size: 2.4rem;
+		font-weight: 500;
+
+		&.right {
+			align-self: flex-end;
+			background-color: #1574F5;
+		}
+
+		&.left {
+			background-color: #205A6D;
+		}
+	}
+
+	.cell {
+		background-color: #F8F5F2;
+		font-size: 1.3rem;
+		color: #0A3847;
+		min-width: 30rem;
+		height: 4rem;
+		border-radius: 3px;
+		padding-left: 2.5rem;
+		display: flex;
+		align-items: center;
+		letter-spacing: 2.2px;
+
+		&:not(:last-child){
+			margin-bottom: 1rem;
+		}
+	}
+	.content {
+		display: flex;
+		flex-direction: column;
+	}
+}

@@ -1,23 +1,24 @@
 import './styles.scss';
-
-const rooms = [
-	{
-		name: 'Berlin CPU',
-	},
-	{
-		name: 'Amsterdam CPU'
-	},
-	{
-		name: 'Sabrican'
-	}
-]
+import { fetchRooms, joinRoom } from '../../store/slices/roomSlice';
+import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 
 
 const RoomsList = () => {
+	const dispatch = useDispatch();
+	const {allRooms} = useSelector(state => state.room);
+	console.log(allRooms)
+	useEffect(() => {
+		dispatch(fetchRooms());
+	}, [dispatch])
+
+	const handleJoinRoom = (room: any) => {
+		dispatch(joinRoom({roomName: room.name}))
+	}
 
 	const renderRooms = () => {
-		return rooms.map(r => (
-			<li className="roomLink"> 
+		return allRooms.map((r: any, index: number) => (
+			<li key={index} className="roomLink" onClick={e => handleJoinRoom(r)}> 
 				<span className="roomName">{r.name}</span>
 				<i className="fas fa-chevron-right rightChevron" />
 			</li>

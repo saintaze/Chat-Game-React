@@ -1,19 +1,32 @@
+import React from 'react';
+import { NumberMessageInterface } from '../Room';
 import './styles.scss';
+import { useSelector } from 'react-redux';
 
-const Message = ({isCurrentUser = true}) => {
+interface IProps {
+	// message: MessageInterface,
+	numberMessage: NumberMessageInterface
+}
 
-	const messageSide = isCurrentUser ? 'right' : 'left';
+const Message: React.FC<IProps> = ({numberMessage}) => {
+	// @ts-ignore
+	const {userInfo} = useSelector(state => state.user);
+	// @ts-ignore
+
+	const {lastNumber} = useSelector(state => state.chat);
+	const isMessageSender = numberMessage.user === userInfo.username;
+	const messageSide = isMessageSender ? 'right' : 'left';
 	const avatar = <div className={`avatar ${messageSide}`}><i className="fas fa-user" /></div>;
 
 	return (
 		<div className={`Message ${messageSide}`}>
-			{!isCurrentUser && avatar}
+			{!isMessageSender && avatar}
 			<div className="content">
-				<div className={`selectedNumber ${messageSide}`}>-1</div>
-				<div className="cell">[(-1 + 19) / 3] = 6</div>
-				<div className="cell">6</div>
+				<div className={`selectedNumber ${messageSide}`}>{numberMessage.selectedNumber}</div>
+				<div className="cell">[({numberMessage.selectedNumber} + {lastNumber}) / 3] = {numberMessage.number}</div>
+				<div className="cell">{numberMessage.number}</div>
 			</div>
-			{isCurrentUser && avatar}
+			{isMessageSender && avatar}
 		</div>
 	)
 }

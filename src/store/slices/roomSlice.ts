@@ -1,14 +1,13 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
+import connection from '../../enums/connection';
 
-
-const BASE_URI = 'http://localhost:3004';
 
 export const fetchRooms = createAsyncThunk(
   'room/fetchRoom',
   async (payload, thunkAPI) => {
 		try{
-			const { data } = await axios.get(`${BASE_URI}/rooms`);
+			const { data } = await axios.get(`${connection.BASE_URL}/rooms`);
 			return data;
 		}catch(err: any){
 			return thunkAPI.rejectWithValue(err.response.data);
@@ -19,20 +18,18 @@ export const fetchRooms = createAsyncThunk(
 
 const roomInitialState = {
 	allRooms: [],
-	joinedRoomName: '',
 	loading: false,
-	errorMessage: '' 
+	errorMessage: '', 
+	// joinedRoomName: ''
 }
 
 export const roomSlice = createSlice({
   name: 'room',
   initialState: roomInitialState,
   reducers: {
-		createNewPhase(state, {payload}){
-		},
-		joinRoom(state, {payload}){
-			state.joinedRoomName = payload.roomName;
-		}
+		// joinRoom(state, {payload}){
+		// 	state.joinedRoomName = payload.roomName;
+		// }
   },
 	extraReducers: (builder) => {
 		builder.addCase(fetchRooms.pending, (state, action) => {
@@ -41,17 +38,18 @@ export const roomSlice = createSlice({
     builder.addCase(fetchRooms.fulfilled, (state, action) => {
       state.allRooms = action.payload;
 			state.loading = false;
+			state.errorMessage = '';
     })
     builder.addCase(fetchRooms.rejected, (state, action) => {
 			// state.errorMessage = action.error.message;
 			state.loading = false;
+			state.allRooms = [];
     })
   }
 })
 
 export const { 
-	createNewPhase,
-	joinRoom
+	// joinRoom
 } = roomSlice.actions
 
 export default roomSlice.reducer

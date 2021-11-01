@@ -1,0 +1,72 @@
+  @import '../../scss/colors';
+	
+	.Modal {
+    position: absolute;
+    top: 42%;
+    left: 50%;
+		transform: translate(-50%, -50%);
+		background-color: $color-white;
+		border-radius: 2px;
+		width: 50rem;
+		height: 30rem;
+		padding: 3rem;
+		box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+		outline: none;
+		border: none;
+
+
+		.usernameControl {
+			display: flex;
+			flex-direction: column;
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			transform: translate(-50%, -50%);
+			width: 80%;
+	
+		}
+
+		.usernameInput{
+			padding: 1.4rem;
+			font-family: inherit;
+			border: 2px solid #DFE1E6;
+			color: #666;
+			border-radius: 3px;
+			font-size: 1.4rem;
+			outline: none;
+
+			&::placeholder {
+				color: #888;
+			}
+		}
+
+		.loginBtn {
+			border: none;
+			color: $color-white;
+			margin-top: 2rem;
+			background-color: $color-green-dark-1;
+
+			border-radius: 3px;
+			padding: 1.4rem 2.9rem;
+			font-size: 1.5rem;
+			font-weight: 500;
+			letter-spacing: .3px;
+			outline: none;
+			font-family: inherit;
+
+			&:hover {
+				transition: all .2s;
+				cursor: pointer;
+				background-color: lighten($color: $color-green-dark-1, $amount: 8);			
+			}
+		}
+  }
+
+  .Overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba($color: #000000, $alpha: .5);
+  }

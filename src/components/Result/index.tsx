@@ -1,10 +1,17 @@
 import './styles.scss';
 import lose from '../../images/lose.png';
 import win from '../../images/win.png';
+import { useSelector } from 'react-redux';
 
 const Result = () => {
-	const resultText = true ? 'You Won' : 'You Lose';
-	const resultImg = true ? win : lose;
+	// @ts-ignore
+	const {userInfo} = useSelector(state => state.user);
+	// @ts-ignore
+	const {numberMessages} = useSelector(state => state.chat);
+
+	const isWinner = numberMessages[numberMessages.length - 1].user === userInfo.username ; 
+	const resultText = isWinner ? 'You Won' : 'You Lose';
+	const resultImg = isWinner ? win : lose;
 
 	return (
 		<div className="Result">

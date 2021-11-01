@@ -74,3 +74,56 @@
 		flex-direction: column;
 	}
 }
+
+
+.welcomeMessage, .joinMessage, .number, .waitMessage {
+	width: 100%;
+	text-align: center;
+	font-weight: 600;
+	margin: 1rem 0 4rem;
+	word-spacing: 2px;
+
+	span {
+		font-weight: 700;
+	}
+}
+
+.welcomeMessage{
+	color: $color-green-dark-2;
+	font-size: 1.7rem;
+}
+
+.waitMessage {
+	color: $color-green-dark-2;
+	font-size: 1.6rem;
+	margin-top: 3.5rem;
+	animation: pulse 1s ease-in-out infinite;
+}
+
+.joinMessage {
+	color: #C05D78;
+	font-size: 1.5rem;
+}
+
+.number {
+	color: #835dc0;
+	
+	span {
+		font-size: 1.8rem;
+	}
+}
+
+
+@keyframes pulse {
+	0% {
+  	transform-origin: 50%;
+		transform: scale(1);
+	}
+
+	50% {
+		transform: scale(1.03);
+	}
+	100% {
+		transform: scale(1);
+	}
+}

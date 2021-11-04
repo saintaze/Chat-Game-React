@@ -1,8 +1,23 @@
+@import './scss/colors';
+
+
 .App {
 	main {
 		display: flex;
 		margin-top: 7rem;
 		min-height: calc(100vh - (7rem + 7.2rem));
+	}
+
+	.roomListContainer{
+			flex: 32%;
+			background-color: $color-cream;
+			padding: 3rem;
+	}
+
+	.roomContainer {
+		padding: 3.8rem 3rem;
+		flex: 68%;
+		position: relative;
 	}
 }
 

@@ -13,7 +13,7 @@ const Message: React.FC<IProps> = ({numberMessage}) => {
 	const {userInfo} = useSelector(state => state.user);
 	// @ts-ignore
 
-	const {lastNumber} = useSelector(state => state.chat);
+	// const {lastNumber} = useSelector(state => state.chat);
 	const isMessageSender = numberMessage.user === userInfo.username;
 	const messageSide = isMessageSender ? 'right' : 'left';
 	const avatar = <div className={`avatar ${messageSide}`}><i className="fas fa-user" /></div>;
@@ -23,7 +23,7 @@ const Message: React.FC<IProps> = ({numberMessage}) => {
 			{!isMessageSender && avatar}
 			<div className="content">
 				<div className={`selectedNumber ${messageSide}`}>{numberMessage.selectedNumber}</div>
-				<div className="cell">[({numberMessage.selectedNumber} + {lastNumber}) / 3] = {numberMessage.number}</div>
+				<div className="cell">[({numberMessage.selectedNumber} + {numberMessage.lastNumber}) / 3] = {numberMessage.number}</div>
 				<div className="cell">{numberMessage.number}</div>
 			</div>
 			{isMessageSender && avatar}

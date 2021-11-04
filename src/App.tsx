@@ -24,16 +24,9 @@ function App() {
 			console.log(socket.id);
 		});
 	}, []);
-
-	// const [id, setId] = useState('1');
-
-	// useEffect(() => {
-	// 	console.log('RESET CHAT')
-	// 	if(number === null){
-	// 		setId(Date.now().toString(36) + Math.random().toString(36).substr(2))
-	// 	}
-	// }, [number])
-
+	
+	// @ts-ignore
+	const {joinedRoomName} = useSelector(state => state.chat);
   return (
     <div className="App">
 			{
@@ -41,8 +34,12 @@ function App() {
 					<>
 						<Navbar/>
 						<main>
-							<RoomsList />
-							<Room />
+							<div className="roomListContainer">
+								 <RoomsList />
+							</div>
+							<div className="roomContainer">
+								{joinedRoomName && <Room />}
+							</div>
 						</main>
 						<Footer />
 					</>

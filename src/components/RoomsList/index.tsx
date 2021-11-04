@@ -1,7 +1,7 @@
 import './styles.scss';
 import { fetchRooms } from '../../store/slices/roomSlice';
 import { joinRoom } from '../../store/slices/chatSlice';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { resetChat, setMetaMessage } from '../../store/slices/chatSlice';
 
@@ -25,29 +25,39 @@ const RoomsList = () => {
 	// @ts-ignore
 	const {socket} = useSelector(state => state.socket);
 
+	const [roomToJoin, setRoomToJoin] = useState<any>();
+	const roomTojoin = useRef<any>()
 
 	useEffect(() => {
 		dispatch(fetchRooms());
 	}, [dispatch])
 
+	const onMessage = useCallback((message: MessageInterface) => {
+		if(message.room) dispatch(setMetaMessage(message));
+	}, [dispatch])
+	
+
 	useEffect(() => {
 		socket.on('message', onMessage);
+		// socket.on('onReady', onReady);
 		return () => socket.off('message', onMessage)
-	}, [])
+	}, [onMessage, socket])
 
-	const onMessage = (message: MessageInterface) => {
-		// console.log('ROOM', message);
-		if(message.room) dispatch(setMetaMessage(message));
-	}
 
 	const handleJoinRoom = (room: any) => {
 		if(room.name === joinedRoomName) return;
 		if(joinedRoomName && joinedRoomName !== room.name){
 			socket.emit('leaveRoom');
 			dispatch(resetChat());
+			console.log('	HELLOOOOOOOOOOO')
+			// roomTojoin.current = room
+			// setRoomToJoin(room)
 		}
 		socket.emit('joinRoom', {username: userInfo.username, room: room.name, roomType: room.type})
+		console.log('CHGDYYEUHDHHHHH')
 	}
+
+
 
 	const renderRooms = () => {
 		return allRooms.map((room: any, index: number) => (

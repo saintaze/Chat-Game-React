@@ -31,12 +31,13 @@ export const chatSlice = createSlice({
 			}
 		},
 		setNumber(state, {payload}){
-			state.lastNumber = state.number
+			// state.lastNumber = state.number
 			state.number = payload.number;
 		},
 		addNumberMessage(state, {payload}) {
 			// @ts-ignore
-			state.numberMessages.push(payload);
+			// state.lastNumber = state.number
+			state.numberMessages.push({...payload, lastNumber: state.number});
 		},
 		resetChat(state){
 			Object.assign(state, chatInitialState);

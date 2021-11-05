@@ -1,55 +1,66 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
 import connection from '../../enums/connection';
+import { Room } from '../../interfaces';
 
+interface ValidationErrors {
+  errorMessage: string
+  field_errors: Record<string, string>
+}
 
-export const fetchRooms = createAsyncThunk(
+export const fetchRooms = createAsyncThunk<Room[], void, { rejectValue: ValidationErrors }>(
   'room/fetchRoom',
-  async (payload, thunkAPI) => {
+  async (_, {rejectWithValue}) => {
 		try{
-			const { data } = await axios.get(`${connection.BASE_URL}/rooms`);
+			const { data } = await axios.get<Room[]>(`${connection.BASE_URL}/rooms`);
 			return data;
 		}catch(err: any){
-			return thunkAPI.rejectWithValue(err.response.data);
-		}
+			let error: AxiosError<ValidationErrors> = err
+			if (!error.response) {
+				throw err;
+			}
+			return rejectWithValue(error.response.data);
+			}
   }
 )
 
+interface RoomState {
+	allRooms: Room[];
+	loading: boolean;
+	errorMessage: string;
+}
 
-const roomInitialState = {
+const initialState: RoomState = {
 	allRooms: [],
 	loading: false,
 	errorMessage: '', 
-	// joinedRoomName: ''
 }
 
 export const roomSlice = createSlice({
   name: 'room',
-  initialState: roomInitialState,
-  reducers: {
-		// joinRoom(state, {payload}){
-		// 	state.joinedRoomName = payload.roomName;
-		// }
-  },
+  initialState,
+  reducers: {},
 	extraReducers: (builder) => {
-		builder.addCase(fetchRooms.pending, (state, action) => {
+		builder.addCase(fetchRooms.pending, (state) => {
 			state.loading = true;
 		})
-    builder.addCase(fetchRooms.fulfilled, (state, action) => {
-      state.allRooms = action.payload;
+    builder.addCase(fetchRooms.fulfilled, (state, {payload}) => {
+      state.allRooms = payload;
 			state.loading = false;
 			state.errorMessage = '';
     })
-    builder.addCase(fetchRooms.rejected, (state, action) => {
-			// state.errorMessage = action.error.message;
+    builder.addCase(fetchRooms.rejected, (state, {payload, error}) => {
+			if (payload) {
+        state.errorMessage = payload.errorMessage;
+      }
+			if(error.message){
+				state.errorMessage = error.message;
+			}
 			state.loading = false;
 			state.allRooms = [];
     })
   }
 })
 
-export const { 
-	// joinRoom
-} = roomSlice.actions
 
 export default roomSlice.reducer

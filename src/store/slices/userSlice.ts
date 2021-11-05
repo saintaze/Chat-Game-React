@@ -1,18 +1,28 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-const userInitialState = {
+interface UserPayload {
+	user: string;
+}
+
+interface UserState {
+  userInfo: {
+		username: string;
+	}
+}
+
+const initialState: UserState = {
 	userInfo: {
 		username: ''
-	},
+	}
 }
 
 export const userSlice = createSlice({
   name: 'user',
-  initialState: userInitialState,
+  initialState,
   reducers: {
-		setUserInfo(state, {payload}){
+		setUserInfo(state, {payload}: PayloadAction<UserPayload>){
 			if(!state.userInfo.username){
-				state.userInfo.username = payload.user
+				state.userInfo.username = payload.user;
 			}
 		}
   }

@@ -1,66 +1,47 @@
-import './styles.scss';
-import { fetchRooms } from '../../store/slices/roomSlice';
-import { joinRoom } from '../../store/slices/chatSlice';
-import { useEffect, useRef, useState, useCallback } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useEffect, useCallback } from 'react';
 import { resetChat, setMetaMessage } from '../../store/slices/chatSlice';
+import { fetchRooms } from '../../store/slices/roomSlice';
+import { useAppDispatch, useAppSelector } from '../../hooks/redux';
+import { Message, Room } from '../../interfaces';
 
-
-export interface MessageInterface {
-	user: string, 
-	socketId: string,
-	message: string, 
-	room: string,
-	type: string
-}
+import './styles.scss';
 
 const RoomsList = () => {
-	const dispatch = useDispatch();
-	// @ts-ignore
-	const {userInfo} = useSelector(state => state.user);
-	// @ts-ignore
-	const {joinedRoomName} = useSelector(state => state.chat);
-	// @ts-ignore
-	const {allRooms} = useSelector(state => state.room);
-	// @ts-ignore
-	const {socket} = useSelector(state => state.socket);
+	const dispatch = useAppDispatch();
 
-	const [roomToJoin, setRoomToJoin] = useState<any>();
-	const roomTojoin = useRef<any>()
+	const {userInfo} = useAppSelector(state => state.user);
+	const {joinedRoomName} = useAppSelector(state => state.chat);
+	const {allRooms} = useAppSelector(state => state.room);
+	const {socket} = useAppSelector(state => state.socket);
 
 	useEffect(() => {
 		dispatch(fetchRooms());
 	}, [dispatch])
 
-	const onMessage = useCallback((message: MessageInterface) => {
+	const onMessage = useCallback((message: Message) => {
 		if(message.room) dispatch(setMetaMessage(message));
 	}, [dispatch])
 	
 
 	useEffect(() => {
-		socket.on('message', onMessage);
-		// socket.on('onReady', onReady);
-		return () => socket.off('message', onMessage)
+		socket?.on('message', onMessage);
+		return () => {
+			socket?.off('message', onMessage)
+		}
 	}, [onMessage, socket])
 
 
-	const handleJoinRoom = (room: any) => {
+	const handleJoinRoom = (room: Room) => {
 		if(room.name === joinedRoomName) return;
 		if(joinedRoomName && joinedRoomName !== room.name){
-			socket.emit('leaveRoom');
+			socket?.emit('leaveRoom');
 			dispatch(resetChat());
-			console.log('	HELLOOOOOOOOOOO')
-			// roomTojoin.current = room
-			// setRoomToJoin(room)
 		}
-		socket.emit('joinRoom', {username: userInfo.username, room: room.name, roomType: room.type})
-		console.log('CHGDYYEUHDHHHHH')
+		socket?.emit('joinRoom', {username: userInfo.username, room: room.name, roomType: room.type})
 	}
 
-
-
 	const renderRooms = () => {
-		return allRooms.map((room: any, index: number) => (
+		return allRooms.map((room, index: number) => (
 			<li key={index} className={`roomLink ${room.name === joinedRoomName && 'active'}`} onClick={() => handleJoinRoom(room)}> 
 				<span className="roomName">{room.name}</span>
 				<i className="fas fa-chevron-right rightChevron" />

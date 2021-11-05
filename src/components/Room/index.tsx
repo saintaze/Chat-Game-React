@@ -1,18 +1,11 @@
-import { useEffect, useLayoutEffect, useRef, useState, useCallback } from 'react';
-import './styles.scss';
-import Message from '../Message/index';
-import Result from '../Result';
-import { useSelector, useDispatch } from 'react-redux';
+import { useEffect, useState, useCallback } from 'react';
 import { addNumberMessage, setNumber } from '../../store/slices/chatSlice';
+import { useAppSelector, useAppDispatch } from '../../hooks/redux';
+import { NumberMessage } from '../../interfaces';
+import Message from '../Message';
+import Result from '../Result';
 
-export interface NumberMessageInterface {
-	user: string,     
-  number: number,
-	lastNumber: number,
-  selectedNumber: number,
-  isFirst: boolean, 
-  isCorrectResult: boolean
-}
+import './styles.scss';
 
 enum GameState {
 	WAIT = 'wait',
@@ -20,65 +13,58 @@ enum GameState {
 }
 
 const Room = () => {
-	// @ts-ignore
-	const {socket} = useSelector(state => state.socket);
-	// @ts-ignore
-	const {userInfo} = useSelector(state => state.user);
-	// @ts-ignore
-	const {joinedRoomName, metaMessages, isFirst, number, lastNumber, numberMessages} = useSelector(state => state.chat);
-
-	const dispatch = useDispatch();
+	const {socket} = useAppSelector(state => state.socket);
+	const {userInfo} = useAppSelector(state => state.user);
+	const {joinedRoomName, metaMessages, number, numberMessages} = useAppSelector(state => state.chat);
+	const dispatch = useAppDispatch();
 	const [isReady, setIsReady] = useState(false);
 	const [turnInfo, setTurnInfo] = useState<any>();
 	const [result, setResult] = useState<any>();
 
+	const scrollToView = (selector: string) => {
+		document.querySelector(selector)?.scrollIntoView({behavior: 'smooth', block: 'end', inline: 'nearest'});
+	}
+
 	useEffect(() => {
-		console.log('BHAO BHAO')
-		document.querySelector('.Footer')?.scrollIntoView({behavior: 'smooth', block: 'end', inline: 'nearest'})
+		scrollToView('.Footer');
 	}, [numberMessages.length])
 
 	useEffect(() => {
 		if(number === 1){
-			console.log('BHAO BHAO')
-			document.querySelector('.Navbar')?.scrollIntoView({behavior: 'smooth', block: 'end', inline: 'nearest'})
+			scrollToView('.Navbar');
 		}
 	}, [number])
 
 	const isMyTurn = () => {
-		return (turnInfo.state === GameState.PLAY && turnInfo.user === socket.id) || 
-					 (turnInfo.state === GameState.WAIT && turnInfo.user !== socket.id);
+		return (turnInfo.state === GameState.PLAY && turnInfo.user === socket?.id) || 
+					 (turnInfo.state === GameState.WAIT && turnInfo.user !== socket?.id);
 	}
 
 	const isPlayerCPU = useCallback(() => {
-		console.log('w222', joinedRoomName)
 		return joinedRoomName === 'Room Izmir CPU' || joinedRoomName === 'Room Berlin CPU';
 	}, [joinedRoomName])
 
 	const handleSelectedNumber = (selectedNumber: number) => {
-		socket.emit('sendNumber', {number, selectedNumber})
+		socket?.emit('sendNumber', {number, selectedNumber})
 	}
 
 	const renderMessages = () => {
-		return numberMessages.map((numberMessage: NumberMessageInterface, index: number) => <Message numberMessage={numberMessage} key={index} />)
+		return numberMessages.map((numberMessage: NumberMessage, index: number) => <Message numberMessage={numberMessage} key={index} />)
 	}
 
 	const capitalizeName = (username: string) => {
 		return username[0].toUpperCase() + username.slice(1);
 	}
 
-
-
-
 	const onGameOver = useCallback(({isOver, user}: any) => {
 		setResult({isWinner: user === userInfo.username, isOver})
-		console.log('GAMEOVER', isOver, user, userInfo.username);
 	}, [userInfo.username])
 
-	const onRandomNumber = useCallback((payload: NumberMessageInterface) => {
+	const onRandomNumber = useCallback((payload: NumberMessage) => {
 		console.log('random', payload, joinedRoomName, numberMessages)
 		if(isPlayerCPU()){
 			console.log('1st')
-			setTurnInfo({state: GameState.PLAY, user: socket.id})
+			setTurnInfo({state: GameState.PLAY, user: socket?.id})
 		}
 		if(payload.isCorrectResult === undefined){
 		  dispatch(setNumber({number: +payload.number}));
@@ -86,49 +72,42 @@ const Room = () => {
 			return;
 		}
 		if(payload.isCorrectResult && (!numberMessages.length || numberMessages[numberMessages.length - 1].number !== 1)){
-			// console.log(payload)
-			console.log('3rd', numberMessages, numberMessages[numberMessages.length - 1])
 			dispatch(addNumberMessage(payload))
 			dispatch(setNumber({number: +payload.number}));
 			// onNumberMessage(payload)
 		}
-	}, [dispatch, numberMessages, isPlayerCPU, socket.id, joinedRoomName])
+	}, [dispatch, numberMessages, isPlayerCPU, socket?.id, joinedRoomName])
 
 	const onReady = useCallback(({state}: {state: boolean}) => {
 		if(state){
 			console.log('PLAY',  joinedRoomName)
-			socket.emit('letsPlay');
+			socket?.emit('letsPlay');
 			// setIsReady(true)
 		}else{
 			console.log('RESET')
-			setIsReady(false);
-			setTurnInfo(undefined);
+			// setIsReady(false);
+			// setTurnInfo(undefined);
 		}
 	}, [joinedRoomName, socket])
 	
 	const onTurn = useCallback((payload: any) => {
 		// if(number <= 1) return
 		setTurnInfo(payload);
-		console.log('TURN', payload)
 	}, [])
 
 	useEffect(() => {
-		socket.on('onReady', onReady);
-		socket.on('randomNumber', onRandomNumber);
-		socket.on('activateYourTurn', onTurn);
-		socket.on('gameOver', onGameOver);
+		socket?.on('onReady', onReady);
+		socket?.on('randomNumber', onRandomNumber);
+		socket?.on('activateYourTurn', onTurn);
+		socket?.on('gameOver', onGameOver);
 
 		return () => {
-			socket.off('onReady', onReady);
-			socket.off('randomNumber', onRandomNumber);
-			socket.off('activateYourTurn', onTurn);
-			socket.off('gameOver', onGameOver);	
+			socket?.off('onReady', onReady);
+			socket?.off('randomNumber', onRandomNumber);
+			socket?.off('activateYourTurn', onTurn);
+			socket?.off('gameOver', onGameOver);	
 		}
 	}, [socket, onGameOver, onRandomNumber, onReady, onTurn])
-
-
-
-
 
 
 	return (

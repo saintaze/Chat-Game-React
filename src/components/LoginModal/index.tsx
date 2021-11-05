@@ -1,36 +1,37 @@
-import { useEffect, useState } from 'react';
-import './styles.scss';
-// @ts-ignore
-import Modal from 'react-modal';
-import { useSelector, useDispatch } from 'react-redux';
+import { useEffect, useState, useCallback } from 'react';
+import { useAppSelector, useAppDispatch } from '../../hooks/redux';
+import { MetaMessage } from '../../interfaces';
 import { setUserInfo } from '../../store/slices/userSlice';
+import Modal from 'react-modal';
 
+import './styles.scss';
 interface IProps {
-	showModal: boolean,
-	setShowModal: (showModal: boolean) => void
+	showModal: boolean;
+	setShowModal: (showModal: boolean) => void;
 }
 
 const LoginModal: React.FC<IProps> = ({showModal, setShowModal}) => {
+	const dispatch = useAppDispatch();
+	const {socket} = useAppSelector(state => state.socket);
 	const [modalIsOpen, setIsOpen] = useState(false);
 	const [username, setUsername] = useState('');
-	// @ts-ignore
-	const {socket} = useSelector(state => state.socket);
-	const dispatch = useDispatch();
+
 
   const closeModal = () => {
     setIsOpen(false);
   }
 
 	const handleLogin  = () => {
-		if(!username.trim().length) return;
-		socket.emit('login', {username})
+		if(!username.trim()) return;
+		socket?.emit('login', {username});
 		closeModal();
 		setUsername('');
 	}
 
-	const onKeyPress = (e: any) => { 
-		if (e.which == 13) {
-			handleLogin()
+	const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => { 
+		console.log(e)
+		if (e.code === 'Enter') {
+			handleLogin();
 		}
 	}
 
@@ -38,15 +39,18 @@ const LoginModal: React.FC<IProps> = ({showModal, setShowModal}) => {
 		setIsOpen(showModal);
 	}, [showModal]);
 
-	const onMessage = ({user, socketId, message}: {user: string, socketId: string, message: string}) => {
-		dispatch(setUserInfo({user}))
-	}
+
+	const onMessage = useCallback(({user}: MetaMessage) => {
+		dispatch(setUserInfo({user}));
+	}, [dispatch]);
+
 
 	useEffect(() => {
-		socket.on('message', onMessage)
-		return () => socket.on('message', onMessage);
-	}, [socket])
-
+		socket?.on('message', onMessage);
+		return () => {
+			socket?.off('message', onMessage);
+		}
+	}, [onMessage, socket])
 
 	return (
 		<Modal
@@ -57,7 +61,7 @@ const LoginModal: React.FC<IProps> = ({showModal, setShowModal}) => {
 			onAfterClose={() => setShowModal(false)}
 		>
 			<div className="usernameControl">
-				<input placeholder="Enter username" className="usernameInput" type="text" value={username} onChange={e => setUsername(e.target.value)} onKeyPress={onKeyPress}/>
+				<input placeholder="Enter username" className="usernameInput" type="text" value={username} onChange={e => setUsername(e.target.value)} onKeyPress={handleKeyPress}/>
 				<button onClick={handleLogin} className="loginBtn">Login</button>
 			</div>
 		</Modal>

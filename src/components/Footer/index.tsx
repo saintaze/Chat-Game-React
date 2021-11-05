@@ -1,5 +1,6 @@
-import './styles.scss';
 import footerLogo from '../../images/footer_logo.png';
+
+import './styles.scss';
 
 const Footer = () => {
 	return (
@@ -13,4 +14,4 @@ const Footer = () => {
 	)
 }
 
-export default Footer
+export default Footer;

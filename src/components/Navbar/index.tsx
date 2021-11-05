@@ -1,15 +1,13 @@
-import './styles.scss';
-import logo from '../../images/logo.png';
-import LoginModal from '../LoginModal/index';
 import { useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useAppSelector } from '../../hooks/redux';
+import logo from '../../images/logo.png';
+import LoginModal from '../LoginModal';
 
-
+import './styles.scss';
 
 const Navbar = () => {
 	const [showModal, setShowModal] = useState(false);
-	// @ts-ignore
-	const {userInfo} = useSelector(state => state.user);
+	const {userInfo} = useAppSelector(state => state.user);
 
 	return (
 		<nav className="Navbar">
@@ -25,7 +23,5 @@ const Navbar = () => {
 		</nav>
 	)
 }
-
-
 
 export default Navbar

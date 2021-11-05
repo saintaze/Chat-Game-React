@@ -1,11 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import App from './App';
-import { Provider } from 'react-redux'
-import store from './store'
-
-// @ts-ignore
+import { Provider } from 'react-redux';
 import Modal from 'react-modal';
+import store from './store';
+import App from './App';
 
 import './scss/index.scss';
 

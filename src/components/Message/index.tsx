@@ -1,23 +1,18 @@
 import React from 'react';
-import { NumberMessageInterface } from '../Room';
-import './styles.scss';
-import { useSelector } from 'react-redux';
+import { useAppSelector } from '../../hooks/redux';
+import { NumberMessage } from '../../interfaces';
 
+import './styles.scss';
 interface IProps {
-	// message: MessageInterface,
-	numberMessage: NumberMessageInterface
+	numberMessage: NumberMessage;
 }
 
 const Message: React.FC<IProps> = ({numberMessage}) => {
-	// @ts-ignore
-	const {userInfo} = useSelector(state => state.user);
-	// @ts-ignore
-
-	// const {lastNumber} = useSelector(state => state.chat);
+	const {userInfo} = useAppSelector(state => state.user);
 	const isMessageSender = numberMessage.user === userInfo.username;
 	const messageSide = isMessageSender ? 'right' : 'left';
 	const avatar = <div className={`avatar ${messageSide}`}><i className="fas fa-user" /></div>;
-
+	
 	return (
 		<div className={`Message ${messageSide}`}>
 			{!isMessageSender && avatar}

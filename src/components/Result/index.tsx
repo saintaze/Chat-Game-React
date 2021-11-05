@@ -3,9 +3,6 @@ import lose from '../../images/lose.png';
 import win from '../../images/win.png';
 
 import './styles.scss';
-// interface IProps {
-// 	isWinner: boolean
-// }
 
 const Result = () => {
 	const {userInfo} = useAppSelector(state => state.user);

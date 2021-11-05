@@ -1,16 +1,11 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { MetaMessage, NumberMessage } from '../../interfaces';
-
 interface JoinRoomPayload {
 	roomName: string;
 }
-
 interface SetNumberPayload {
 	number: number;
 }
-
-
-
 interface ChatState {
 	metaMessages: {
 		joined: MetaMessage | null;
@@ -32,7 +27,7 @@ const initialState: ChatState = {
 	isFirst: true,
 	number: null,
 	lastNumber: null,
-	joinedRoomName: '',
+	joinedRoomName: ''
 }
 
 export const chatSlice = createSlice({

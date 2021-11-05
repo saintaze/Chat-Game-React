@@ -4,8 +4,13 @@ import connection from '../../enums/connection';
 import { Room } from '../../interfaces';
 
 interface ValidationErrors {
-  errorMessage: string
-  field_errors: Record<string, string>
+  errorMessage: string;
+  field_errors: Record<string, string>;
+}
+interface RoomState {
+	allRooms: Room[];
+	loading: boolean;
+	errorMessage: string;
 }
 
 export const fetchRooms = createAsyncThunk<Room[], void, { rejectValue: ValidationErrors }>(
@@ -20,15 +25,9 @@ export const fetchRooms = createAsyncThunk<Room[], void, { rejectValue: Validati
 				throw err;
 			}
 			return rejectWithValue(error.response.data);
-			}
+		}
   }
 )
-
-interface RoomState {
-	allRooms: Room[];
-	loading: boolean;
-	errorMessage: string;
-}
 
 const initialState: RoomState = {
 	allRooms: [],

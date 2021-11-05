@@ -61,37 +61,32 @@ const Room = () => {
 	}, [userInfo.username])
 
 	const onRandomNumber = useCallback((payload: NumberMessage) => {
-		console.log('random', payload, joinedRoomName, numberMessages)
 		if(isPlayerCPU()){
-			console.log('1st')
-			setTurnInfo({state: GameState.PLAY, user: socket?.id})
+			setTurnInfo({state: GameState.PLAY, user: socket?.id});
 		}
 		if(payload.isCorrectResult === undefined){
 		  dispatch(setNumber({number: +payload.number}));
-			console.log('2nd')
 			return;
 		}
 		if(payload.isCorrectResult && (!numberMessages.length || numberMessages[numberMessages.length - 1].number !== 1)){
 			dispatch(addNumberMessage(payload))
 			dispatch(setNumber({number: +payload.number}));
-			// onNumberMessage(payload)
 		}
-	}, [dispatch, numberMessages, isPlayerCPU, socket?.id, joinedRoomName])
+	}, [dispatch, numberMessages, isPlayerCPU, socket])
 
 	const onReady = useCallback(({state}: {state: boolean}) => {
 		if(state){
 			console.log('PLAY',  joinedRoomName)
 			socket?.emit('letsPlay');
-			// setIsReady(true)
+			setIsReady(true)
 		}else{
 			console.log('RESET')
-			// setIsReady(false);
-			// setTurnInfo(undefined);
+			setIsReady(false);
+			setTurnInfo(undefined);
 		}
 	}, [joinedRoomName, socket])
 	
 	const onTurn = useCallback((payload: any) => {
-		// if(number <= 1) return
 		setTurnInfo(payload);
 	}, [])
 

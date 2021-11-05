@@ -5,7 +5,7 @@ import { setSocket } from './store/slices/socketSlice';
 import { useAppDispatch, useAppSelector } from './hooks/redux';
 import Navbar from './components/Navbar';
 import RoomsList from './components/RoomsList';
-import Room from './components/Room/index';
+import Room from './components/Room';
 import Footer from './components/Footer';
 
 import './App.scss';

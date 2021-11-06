@@ -28,3 +28,12 @@ export interface Message {
 	room: string;
 	type: string;
 }
+
+export interface ResultI {
+	isWinner: boolean;
+	isOver: boolean;
+}
+export interface ActiveTurn {
+	state: string;
+	user: string | undefined;
+}

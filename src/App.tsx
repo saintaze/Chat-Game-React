@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import io  from "socket.io-client";
-import connection  from './enums/connection';
+import connection  from './constants/connection';
 import { setSocket } from './store/slices/socketSlice';
 import { useAppDispatch, useAppSelector } from './hooks/redux';
 import Navbar from './components/Navbar';

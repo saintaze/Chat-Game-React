@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios, { AxiosError } from 'axios';
-import connection from '../../enums/connection';
+import connection from '../../constants/connection';
 import { Room } from '../../interfaces';
 
 interface ValidationErrors {

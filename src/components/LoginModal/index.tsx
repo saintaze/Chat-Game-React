@@ -29,10 +29,7 @@ const LoginModal: React.FC<IProps> = ({showModal, setShowModal}) => {
 	}
 
 	const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => { 
-		console.log(e)
-		if (e.code === 'Enter') {
-			handleLogin();
-		}
+		if (e.code === 'Enter') handleLogin();
 	}
 
 	useEffect(() => {

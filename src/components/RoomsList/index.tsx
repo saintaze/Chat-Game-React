@@ -6,9 +6,9 @@ import { Message, Room } from '../../interfaces';
 
 import './styles.scss';
 
+
 const RoomsList = () => {
 	const dispatch = useAppDispatch();
-
 	const {userInfo} = useAppSelector(state => state.user);
 	const {joinedRoomName} = useAppSelector(state => state.chat);
 	const {allRooms} = useAppSelector(state => state.room);

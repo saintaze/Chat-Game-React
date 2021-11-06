@@ -1,7 +1,7 @@
 import { useEffect, useState, useCallback } from 'react';
 import { addNumberMessage, setNumber } from '../../store/slices/chatSlice';
 import { useAppSelector, useAppDispatch } from '../../hooks/redux';
-import { NumberMessage } from '../../interfaces';
+import { ActiveTurn, NumberMessage, ResultI } from '../../interfaces';
 import Message from '../Message';
 import Result from '../Result';
 
@@ -13,13 +13,13 @@ enum GameState {
 }
 
 const Room = () => {
+	const dispatch = useAppDispatch();
 	const {socket} = useAppSelector(state => state.socket);
 	const {userInfo} = useAppSelector(state => state.user);
 	const {joinedRoomName, metaMessages, number, numberMessages} = useAppSelector(state => state.chat);
-	const dispatch = useAppDispatch();
-	const [isReady, setIsReady] = useState(false);
-	const [turnInfo, setTurnInfo] = useState<any>();
-	const [result, setResult] = useState<any>();
+	// const [isReady, setIsReady] = useState(false);
+	const [turnInfo, setTurnInfo] = useState<ActiveTurn>();
+	const [result, setResult] = useState<ResultI>();
 
 	const scrollToView = (selector: string) => {
 		document.querySelector(selector)?.scrollIntoView({behavior: 'smooth', block: 'end', inline: 'nearest'});
@@ -36,8 +36,8 @@ const Room = () => {
 	}, [number])
 
 	const isMyTurn = () => {
-		return (turnInfo.state === GameState.PLAY && turnInfo.user === socket?.id) || 
-					 (turnInfo.state === GameState.WAIT && turnInfo.user !== socket?.id);
+		return (turnInfo?.state === GameState.PLAY && turnInfo?.user === socket?.id) || 
+					 (turnInfo?.state === GameState.WAIT && turnInfo?.user !== socket?.id);
 	}
 
 	const isPlayerCPU = useCallback(() => {
@@ -49,14 +49,14 @@ const Room = () => {
 	}
 
 	const renderMessages = () => {
-		return numberMessages.map((numberMessage: NumberMessage, index: number) => <Message numberMessage={numberMessage} key={index} />)
+		return numberMessages.map((numberMessage, index: number) => <Message numberMessage={numberMessage} key={index} />)
 	}
 
 	const capitalizeName = (username: string) => {
 		return username[0].toUpperCase() + username.slice(1);
 	}
 
-	const onGameOver = useCallback(({isOver, user}: any) => {
+	const onGameOver = useCallback(({isOver, user}: {isOver: boolean, user: string}) => {
 		setResult({isWinner: user === userInfo.username, isOver})
 	}, [userInfo.username])
 
@@ -78,11 +78,11 @@ const Room = () => {
 		if(state){
 			console.log('PLAY',  joinedRoomName)
 			socket?.emit('letsPlay');
-			setIsReady(true)
+			// setIsReady(true)
 		}else{
 			console.log('RESET')
-			setIsReady(false);
-			setTurnInfo(undefined);
+			// setIsReady(false);
+			// setTurnInfo(undefined);
 		}
 	}, [joinedRoomName, socket])
 	

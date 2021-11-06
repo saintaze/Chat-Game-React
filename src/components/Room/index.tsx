@@ -17,7 +17,6 @@ const Room = () => {
 	const {socket} = useAppSelector(state => state.socket);
 	const {userInfo} = useAppSelector(state => state.user);
 	const {joinedRoomName, metaMessages, number, numberMessages} = useAppSelector(state => state.chat);
-	// const [isReady, setIsReady] = useState(false);
 	const [turnInfo, setTurnInfo] = useState<ActiveTurn>();
 	const [result, setResult] = useState<ResultI>();
 
@@ -75,18 +74,10 @@ const Room = () => {
 	}, [dispatch, numberMessages, isPlayerCPU, socket])
 
 	const onReady = useCallback(({state}: {state: boolean}) => {
-		if(state){
-			console.log('PLAY',  joinedRoomName)
-			socket?.emit('letsPlay');
-			// setIsReady(true)
-		}else{
-			console.log('RESET')
-			// setIsReady(false);
-			// setTurnInfo(undefined);
-		}
-	}, [joinedRoomName, socket])
+		if(state) socket?.emit('letsPlay');
+	}, [socket])
 	
-	const onTurn = useCallback((payload: any) => {
+	const onTurn = useCallback((payload: ActiveTurn) => {
 		setTurnInfo(payload);
 	}, [])
 

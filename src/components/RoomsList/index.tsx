@@ -6,7 +6,6 @@ import { Message, Room } from '../../interfaces';
 
 import './styles.scss';
 
-
 const RoomsList = () => {
 	const dispatch = useAppDispatch();
 	const {userInfo} = useAppSelector(state => state.user);
@@ -22,14 +21,12 @@ const RoomsList = () => {
 		if(message.room) dispatch(setMetaMessage(message));
 	}, [dispatch])
 	
-
 	useEffect(() => {
 		socket?.on('message', onMessage);
 		return () => {
 			socket?.off('message', onMessage)
 		}
 	}, [onMessage, socket])
-
 
 	const handleJoinRoom = (room: Room) => {
 		if(room.name === joinedRoomName) return;
